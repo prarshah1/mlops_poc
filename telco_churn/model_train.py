@@ -15,6 +15,9 @@ from telco_churn.common import MLflowTrackingConfig, FeatureStoreTableConfig, La
 from telco_churn.model_train_pipeline import ModelTrainPipeline
 from telco_churn.utils.get_spark import spark
 from telco_churn.utils.logger_utils import get_logger
+from shap import TreeExplainer
+from shap import summary_plot
+import numpy as np
 
 fs = FeatureStoreClient()
 _logger = get_logger()
@@ -228,6 +231,12 @@ class ModelTrain:
             # Log metrics for the test set
             _logger.info('==========Model Evaluation==========')
             _logger.info('Evaluating and logging metrics')
+
+            """ SHAP """
+            explainer = TreeExplainer(model)
+            shap_values = np.array(explainer.shap_values(X_train))
+            for i in set(y_train[self.cfg.labels_table_cfg.label_col].values):
+                mlflow.log_metric(f"SHAP for label {i}", summary_plot(shap_values[i], X_train))
             test_metrics = mlflow.sklearn.eval_and_log_metrics(model, X_test, y_test, prefix='test_')
             print(pd.DataFrame(test_metrics, index=[0]))
 

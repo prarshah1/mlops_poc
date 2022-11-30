@@ -51,6 +51,5 @@ class ModelTrainPipelineTest(unittest.TestCase):
         pipeline = ModelTrainPipeline.create_train_pipeline(model_params=model_params)
         pipeline.fit(X, y)
         y_pred = pipeline.predict(X)
-
         assert np.array_equal(y_pred, y_pred.astype(bool))
 
