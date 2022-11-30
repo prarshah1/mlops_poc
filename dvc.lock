@@ -1,0 +1,7 @@
+schema: '2.0'
+stages:
+  input_path_dvc:
+    cmd: echo "DVC Completed"
+    params:
+      conf/pipeline_configs/feature_table_creator.yml:
+        input_s3_path: s3://model-input-data-s3/input/Telco_customer_churn.csv

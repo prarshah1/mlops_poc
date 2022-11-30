@@ -1,4 +1,5 @@
 input_table: 'ibm_telco_churn.bronze_customers'
+input_s3_path: 's3://model-input-data-s3/input/Telco_customer_churn.csv'
 
 data_prep_params:
   label_col: 'churnLabel'
