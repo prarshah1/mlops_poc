@@ -1,0 +1,19 @@
+{
+    "environments": {
+        "dev": {
+            "profile": "dev",
+            "workspace_dir": "/Shared/mlops_flow_poc/dev/dbx/mlops_flow_poc_dev",
+            "artifact_location": "dbfs:/Shared/mlops_flow_poc/dev/dbx/projects/mlops_flow_poc_dbx_dev"
+        },
+        "staging": {
+            "profile": "staging",
+            "workspace_dir": "/Shared/mlops_flow_poc/staging/dbx/mlops_flow_poc_staging",
+            "artifact_location": "dbfs:/Shared/mlops_flow_poc/staging/dbx/projects/mlops_flow_poc_dbx_staging"
+        },
+        "prod": {
+            "profile": "prod",
+            "workspace_dir": "/Shared/mlops_flow_poc/prod/dbx/mlops_flow_poc_prod",
+            "artifact_location": "dbfs:/Shared/mlops_flow_poc/prod/dbx/projects/mlops_flow_poc_dbx_prod"
+        }
+    }
+}
