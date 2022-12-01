@@ -12,7 +12,6 @@ name: CI pipeline
 #
 ## load input data table as a Spark DataFrameinput_data = spark.table(input_table_name)model_udf = mlflow.pyfunc.spark_udf(model_path)df = input_data.withColumn("prediction", model_udf())
 
-
 on:
   pull_request:
     branches:
@@ -21,9 +20,21 @@ on:
       - 'v*' # this tag type is used for release pipelines hk
 
 jobs:
-  clear-cache:
+  ci-pipeline:
+
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+
+    env:
+#      DATABRICKS_HOST: https://dbc-79ee8895-9a53.cloud.databricks.com
+#      DATABRICKS_TOKEN: dapib7b9ee9e57d9d622c5f14a9b343fdf3b
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
+
     steps:
+      - uses: actions/checkout@v3
+
       - name: Clear cache
         uses: actions/github-script@v6
         with:
@@ -42,20 +53,6 @@ jobs:
               })
             }
             console.log("Clear completed")
-  ci-pipeline:
-
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-
-    env:
-#      DATABRICKS_HOST: https://dbc-79ee8895-9a53.cloud.databricks.com
-#      DATABRICKS_TOKEN: dapib7b9ee9e57d9d622c5f14a9b343fdf3b
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v3
