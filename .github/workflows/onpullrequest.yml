@@ -28,10 +28,10 @@ jobs:
       max-parallel: 4
 
     env:
-#      DATABRICKS_HOST: https://dbc-79ee8895-9a53.cloud.databricks.com
-#      DATABRICKS_TOKEN: dapib7b9ee9e57d9d622c5f14a9b343fdf3b
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
+      DATABRICKS_HOST: https://dbc-79ee8895-9a53.cloud.databricks.com
+      DATABRICKS_TOKEN: dapib7b9ee9e57d9d622c5f14a9b343fdf3b
+#      DATABRICKS_HOST: ${{ secrets.DATABRICKS_PROD_HOST }}
+#      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
 
     steps:
       - uses: actions/checkout@v3
