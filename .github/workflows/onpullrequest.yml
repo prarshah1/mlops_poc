@@ -50,6 +50,12 @@ jobs:
           pip install -r unit-requirements.txt
           pip install -e .
 
+      - name: Run dvc
+        run: |
+          dvc pull
+          dvc repro
+          dvc push
+
       - name: Run unit tests
         run: |
           echo "Launching unit tests"
