@@ -3,8 +3,8 @@ custom:
   # Cluster configs for each environment
   default-cluster-spec: &default-cluster-spec
     spark_version: '11.0.x-cpu-ml-scala2.12'
-    node_type_id: 'i3.xlarge' # NOTE: this is an AWS-specific instance type. Change accordingly if running on Azure or GCP.
-    driver_node_type_id: 'i3.xlarge'  # NOTE: this is an AWS-specific instance type. Change accordingly if running on Azure or GCP.
+    node_type_id: 'r4.large' # NOTE: this is an AWS-specific instance type. Change accordingly if running on Azure or GCP.
+    driver_node_type_id: 'r4.large'  # NOTE: this is an AWS-specific instance type. Change accordingly if running on Azure or GCP.
     num_workers: 1
     # To reduce start up time for each job, it is advisable to use a cluster pool. To do so involves supplying the following
     # two fields with a pool_id to acquire both the driver and instances from.
@@ -93,13 +93,6 @@ environments:
   prod:
     strict_path_adjustment_policy: true
     jobs:
-      - name: 'PROD-telco-churn-demo-setup'
-        <<: *prod-cluster-config
-        spark_python_task:
-          python_file: 'file://telco_churn/pipelines/demo_setup_job.py'
-          parameters: ['--base-data-params', 'file:fuse://conf/.base_data_params.env',
-                       '--env', 'file:fuse://conf/prod/.prod.env',
-                       '--conf-file', 'file:fuse://conf/pipeline_configs/demo_setup.yml']
       - name: 'PROD-telco-churn-initial-model-train-register'
         tasks:
           - task_key: 'demo-setup'
