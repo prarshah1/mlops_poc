@@ -14,6 +14,11 @@
             "profile": "prod",
             "workspace_dir": "/Shared/mlops_flow_poc/prod/dbx/mlops_flow_poc_prod",
             "artifact_location": "dbfs:/Shared/mlops_flow_poc/prod/dbx/projects/mlops_flow_poc_dbx_prod"
+        },
+        "default": {
+            "profile": "DEFAULT",
+            "workspace_dir": "/Shared/dbx/projects/mlops_poc",
+            "artifact_location": "dbfs:/dbx/mlops_poc"
         }
     }
 }

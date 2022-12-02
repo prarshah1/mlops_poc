@@ -1,10 +1,12 @@
 name: CI pipeline
+# TODO remove this
+# Feature store and delta options
+# Inference - feature store, delta table, - pyfunc/spark_udf
 # our diagram in
 # integrate with dvc with mlflow
 # move this to new registry
 # remove any references - complete new
 # implement shap pdp and subpopulation with model training and store the artifacts in mlflow, lift- roc, auc, confusion matrix
-
 
 # infer - load mlflow.pyfunc, or initialize pyspark and load
 
