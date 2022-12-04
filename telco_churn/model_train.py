@@ -242,49 +242,43 @@ class ModelTrain:
             Shap Values
             """
             # mlflow.shap.log_explanation(model["classifier"].predict, features_df)
-            explainer = TreeExplainer(model["classifier"], features_df)
-            shap_values = explainer(features_df)
-            # bar plot
-            shap.plots.bar(shap_values, show=False)
-            shap_bar = pl.gcf()
-            mlflow.log_figure(shap_bar, "shap/shap_bar.png")
-
-            # waterfall
-            shap.plots.waterfall(shap_values[0], show=False)
-            shap_waterfall_plot = pl.gcf()
-            mlflow.log_figure(shap_waterfall_plot, "shap/shap_waterfall_plot.png")
-
-            # waterfall
-            shap.plots.scatter(shap_values[:, shap_values.abs.mean(0).argsort[-1]], show=False)
-            shap_scatter_plot = pl.gcf()
-            mlflow.log_figure(shap_scatter_plot, "shap/shap_scatter_plot.png")
+            # explainer = TreeExplainer(model["classifier"], features_df)
+            # shap_values = explainer(features_df)
+            # # bar plot
+            # shap.plots.bar(shap_values, show=False)
+            # shap_bar = pl.gcf()
+            # mlflow.log_figure(shap_bar, "shap/shap_bar.png")
+            #
+            # # waterfall
+            # shap.plots.waterfall(shap_values[0], show=False)
+            # shap_waterfall_plot = pl.gcf()
+            # mlflow.log_figure(shap_waterfall_plot, "shap/shap_waterfall_plot.png")
+            #
+            # # waterfall
+            # shap.plots.scatter(shap_values[:, shap_values.abs.mean(0).argsort[-1]], show=False)
+            # shap_scatter_plot = pl.gcf()
+            # mlflow.log_figure(shap_scatter_plot, "shap/shap_scatter_plot.png")
 
             """
             PDP Values
             """
-            pdp = partial_dependence(model["classifier"], features_df, [0], kind='both')
-            explainer = TreeExplainer(model["classifier"])
-            shap_values = np.array(explainer.shap_values(model["preprocessor"].transform(X_train)))
-            # TODO shap mlfow error
-            # mlflow.log_figure(shap.summary_plot(shap_values), "shap_plot.png")
-
             # PDP
-            n_cols = X_train.columns.shape[0]
-            n_rows = int(len(X_train.columns) / n_cols)
-            fig, ax = plt.subplots(n_rows, n_cols, figsize=(10, 12), sharey=True)
-            for i, x in enumerate(X_train.columns):
-                print(f"i: {i}, x: {x}")
-                raw_values = partial_dependence(model["classifier"], model["preprocessor"].transform(X_train), i,
-                                                kind='average')
-                loc = max(i // n_cols, i % n_cols)
-                sns.lineplot(x=raw_values['values'][0],
-                             y=raw_values['average'][0], ax=ax[loc], style=0,
-                             markers=True, legend=False)
-                ax[loc].set_xlabel(x)
-                if int(i % n_cols) == 0:
-                    ax[loc].set_ylabel('Partial dependence')
-            fig.tight_layout()
-            mlflow.log_figure(fig, "pdp.jpg")
+            # n_cols = X_train.columns.shape[0]
+            # n_rows = int(len(X_train.columns) / n_cols)
+            # fig, ax = plt.subplots(n_rows, n_cols, figsize=(10, 12), sharey=True)
+            # for i, x in enumerate(X_train.columns):
+            #     print(f"i: {i}, x: {x}")
+            #     raw_values = partial_dependence(model["classifier"], model["preprocessor"].transform(X_train), i,
+            #                                     kind='average')
+            #     loc = max(i // n_cols, i % n_cols)
+            #     sns.lineplot(x=raw_values['values'][0],
+            #                  y=raw_values['average'][0], ax=ax[loc], style=0,
+            #                  markers=True, legend=False)
+            #     ax[loc].set_xlabel(x)
+            #     if int(i % n_cols) == 0:
+            #         ax[loc].set_ylabel('Partial dependence')
+            # fig.tight_layout()
+            # mlflow.log_figure(fig, "pdp.jpg")
 
             test_metrics = mlflow.sklearn.eval_and_log_metrics(model, X_test, y_test, prefix='test_')
             print(pd.DataFrame(test_metrics, index=[0]))

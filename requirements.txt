@@ -1,8 +1,4 @@
 python-dotenv==0.20.0
 shap==0.36.0
-dvc==2.35.2
-awscli
 matplotlib
 seaborn
-apache-airflow==2.1.0
-apache-airflow-providers-databricks
