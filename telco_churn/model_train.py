@@ -22,7 +22,8 @@ import shap
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.inspection import partial_dependence, PartialDependenceDisplay
-
+import matplotlib.pyplot as pl
+from sklearn.inspection import partial_dependence, PartialDependenceDisplay
 fs = FeatureStoreClient()
 _logger = get_logger()
 
@@ -236,7 +237,32 @@ class ModelTrain:
             _logger.info('==========Model Evaluation==========')
             _logger.info('Evaluating and logging metrics')
 
-            """ SHAP """
+            features_df = model["preprocessor"].transform(X_train)
+            """
+            Shap Values
+            """
+            # mlflow.shap.log_explanation(model["classifier"].predict, features_df)
+            explainer = TreeExplainer(model["classifier"], features_df)
+            shap_values = explainer(features_df)
+            # bar plot
+            shap.plots.bar(shap_values, show=False)
+            shap_bar = pl.gcf()
+            mlflow.log_figure(shap_bar, "shap/shap_bar.png")
+
+            # waterfall
+            shap.plots.waterfall(shap_values[0], show=False)
+            shap_waterfall_plot = pl.gcf()
+            mlflow.log_figure(shap_waterfall_plot, "shap/shap_waterfall_plot.png")
+
+            # waterfall
+            shap.plots.scatter(shap_values[:, shap_values.abs.mean(0).argsort[-1]], show=False)
+            shap_scatter_plot = pl.gcf()
+            mlflow.log_figure(shap_scatter_plot, "shap/shap_scatter_plot.png")
+
+            """
+            PDP Values
+            """
+            pdp = partial_dependence(model["classifier"], features_df, [0], kind='both')
             explainer = TreeExplainer(model["classifier"])
             shap_values = np.array(explainer.shap_values(model["preprocessor"].transform(X_train)))
             # TODO shap mlfow error
