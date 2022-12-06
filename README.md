@@ -11,6 +11,8 @@
 3. The following command trains and register the poc model for demo: 
    * dbx deploy --jobs=PROD-telco-churn-initial-model-train-register --environment=prod --files-only
    * dbx launch --job=PROD-telco-churn-initial-model-train-register --environment=prod --as-run-submit --trace
+4. To access s3 buckets refer: [Secure access to S3 buckets using instance profiles](https://docs.databricks.com/administration-guide/cloud-configurations/aws/instance-profiles.html)
+5. To run inference dag, create a new connection in airflow with type=Databricks
 
 
 ## Dev workflow
