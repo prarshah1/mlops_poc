@@ -3,5 +3,6 @@ shap==0.36.0
 awscli
 matplotlib
 seaborn
-apache-airflow==2.1.0
-apache-airflow-providers-databricks
+databricks-feature-store
+# apache-airflow==2.1.0
+# apache-airflow-providers-databricks

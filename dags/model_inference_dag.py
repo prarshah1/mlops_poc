@@ -7,6 +7,7 @@ from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
 from airflow.utils.dates import days_ago
+os.environ["no_proxy"]="*"
 
 default_args = {
     "owner": "data-axle",
@@ -27,20 +28,21 @@ with DAG(
     description="submit databricks job for model inferencing",
     schedule_interval="@once",
     max_active_runs=1,
-    is_paused_upon_creation=True
+    is_paused_upon_creation=True,
+    start_date=airflow.utils.dates.days_ago(2),
 ) as dag:
     new_cluster = {
         # TODO replace with commented code
-        'spark_version': '2.1.0-db3-scala2.11', # config["spark_version"],
-        'node_type_id': 'r3.xlarge', # config["node_type_id"],
+        'spark_version': '11.0.x-cpu-ml-scala2.12', # config["spark_version"],
+        'node_type_id': 'i3.xlarge', # config["node_type_id"],
         'aws_attributes': {'availability': 'ON_DEMAND'},
-        'num_workers': 8, # config["num_workers"],
+        'num_workers': 2, # config["num_workers"],
     }
 
     notebook_task_params = {
         'new_cluster': new_cluster,
         'notebook_task': {
-            'notebook_path': '/Users/prarwork@gmail.com/PrepareData',
+            'notebook_path': '/Users/prarwork@gmail.com/InferData',
         },
     }
 
@@ -60,10 +62,8 @@ start_process = DummyOperator(task_id="Begin_Execution", dag=dag)
 end_process = DummyOperator(task_id="Stop_Execution", dag=dag)
 
 submit_databricks_job = DatabricksSubmitRunOperator(
-    task_id='spark_jar_task',
-    new_cluster=new_cluster,
-    spark_jar_task={'main_class_name': 'ProcessData'},
-    # libraries=[{'jar': 'dbfs:/lib/etl-0.1.jar'}],
+    task_id='notebook_run',
+    json=notebook_task_params
 )
 
 start_process >> submit_databricks_job >> end_process
