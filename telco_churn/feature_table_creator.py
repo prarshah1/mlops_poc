@@ -26,6 +26,7 @@ class FeatureTableCreatorConfig:
             Labels table config to specify database_name, table_name, label_col and dbfs_path
     """
     input_table: str
+    input_s3_path: str
     featurizer_cfg: FeaturizerConfig
     feature_store_table_cfg: FeatureStoreTableConfig
     labels_table_cfg: LabelsTableConfig
@@ -65,7 +66,7 @@ class FeatureTableCreator:
         pyspark.sql.DataFrame
             Input Spark DataFrame
         """
-        return spark.table(self.cfg.input_table)
+        return spark.table(self.cfg.input_s3_path)
 
     def run_data_prep(self, input_df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
