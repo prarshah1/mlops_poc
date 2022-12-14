@@ -115,6 +115,7 @@ class FeatureTableCreator:
         features_df = df.drop(self.cfg.labels_table_cfg.label_col)
         feature_table_name = f'{feature_store_table_cfg.database_name}.{feature_store_table_cfg.table_name}'
         _logger.info(f'Creating and writing features to feature table: {feature_table_name}')
+        # store dictionary catlog
         feature_store_utils.create_and_write_feature_table(features_df,
                                                            feature_table_name,
                                                            primary_keys=feature_store_table_cfg.primary_keys,
