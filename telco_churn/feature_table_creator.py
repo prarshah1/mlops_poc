@@ -66,7 +66,10 @@ class FeatureTableCreator:
         pyspark.sql.DataFrame
             Input Spark DataFrame
         """
-        return spark.table(self.cfg.input_s3_path)
+        if (str(self.cfg.input_table) != ""):
+            return spark.table(self.cfg.input_table)
+        else:
+            return spark.read.csv(self.cfg.input_s3_path)
 
     def run_data_prep(self, input_df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """

@@ -13,12 +13,12 @@ default_args = {
     "owner": "data-axle",
     "start_date": airflow.utils.dates.days_ago(2),
     "depends_on_past": False,
-    'email': ['airflow@example.com'],
+    "email": ["airflow@example.com"],
     "current_path": os.path.abspath(os.path.dirname(__file__)),
     "retries": 0,
 }
 
-config_file = default_args['current_path'] + '/config.json'
+config_file = default_args["current_path"] + "/config.json"
 with open(config_file) as f:
     config = json.load(f)
 
@@ -33,16 +33,16 @@ with DAG(
 ) as dag:
     new_cluster = {
         # TODO replace with commented code
-        'spark_version': '11.0.x-cpu-ml-scala2.12', # config["spark_version"],
-        'node_type_id': 'i3.xlarge', # config["node_type_id"],
-        'aws_attributes': {'availability': 'ON_DEMAND'},
-        'num_workers': 2, # config["num_workers"],
+        "spark_version": "11.0.x-cpu-ml-scala2.12", # config["spark_version"],
+        "node_type_id": "i3.xlarge", # config["node_type_id"],
+        "aws_attributes": {"availability": "ON_DEMAND"},
+        "num_workers": 2, # config["num_workers"],
     }
 
     notebook_task_params = {
-        'new_cluster': new_cluster,
-        'notebook_task': {
-            'notebook_path': '/Users/prarwork@gmail.com/InferData',
+        "new_cluster": new_cluster,
+        "notebook_task": {
+            "notebook_path": "/Users/prarwork@gmail.com/InferData",
         },
     }
 
@@ -62,7 +62,7 @@ start_process = DummyOperator(task_id="Begin_Execution", dag=dag)
 end_process = DummyOperator(task_id="Stop_Execution", dag=dag)
 
 submit_databricks_job = DatabricksSubmitRunOperator(
-    task_id='notebook_run',
+    task_id="notebook_run",
     json=notebook_task_params
 )
 

@@ -17,5 +17,5 @@ else
 fi
 
 # TODO for testing purposes, remove this
-export DATABRICKS_HOST=https://dbc-79ee8895-9a53.cloud.databricks.com
-export DATABRICKS_TOKEN=dapib7b9ee9e57d9d622c5f14a9b343fdf3b
+export DATABRICKS_HOST=https://dbc-802ec73f-8aa3.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi873f4b7d7e18f00676d17aeee5bacd2e

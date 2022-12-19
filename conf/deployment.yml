@@ -22,8 +22,7 @@ custom:
       <<: *default-cluster-spec
 
   prod-cluster-config: &prod-cluster-config
-    new_cluster:
-      <<: *default-cluster-spec
+    existing_cluster_id: '1219-125751-wg8ljv4a'
 
 # Databricks Jobs definitions
 # please note that we're using FUSE reference for config, and env files, hence we're going to load this file using its local FS path
