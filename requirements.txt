@@ -1,4 +1,7 @@
 python-dotenv==0.20.0
-shap==0.41.0
-dvc==2.35.2
+shap==0.36.0
 awscli
+matplotlib
+seaborn
+mlflow==1.30.0
+databricks-feature-store

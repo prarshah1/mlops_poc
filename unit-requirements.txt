@@ -10,3 +10,4 @@ pytest-cov==3.0.0
 dbx==0.5.0
 delta-spark
 python-dotenv==0.20.0
+dvc==2.35.2

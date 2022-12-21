@@ -2,3 +2,5 @@
     remote = local_dir
 ['remote "local_dir"']
     url = backup
+['remote "s3"']
+    url = "s3://db-74a211f8ca9428a45444d79085250a00-s3-root-bucket/dvc_remote/"

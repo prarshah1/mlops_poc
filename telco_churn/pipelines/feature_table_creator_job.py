@@ -8,8 +8,10 @@ _logger = get_logger()
 
 class FeatureTableCreatorJob(Workload):
 
-    def _get_input_table(self) -> dict:
+    def _get_input_table(self) -> str:
         return self.conf['input_table']
+    def _get_input_s3_path(self) -> str:
+        return self.conf['input_s3_path']
 
     def _get_data_prep_params(self) -> FeaturizerConfig:
         return FeaturizerConfig(**self.conf['data_prep_params'])
@@ -33,6 +35,7 @@ class FeatureTableCreatorJob(Workload):
         _logger.info('Launching FeatureTableCreator job')
         _logger.info(f'Running feature-table-creation pipeline in {self.env_vars["env"]} environment')
         cfg = FeatureTableCreatorConfig(input_table=self._get_input_table(),
+                                        input_s3_path=self._get_input_s3_path(),
                                         featurizer_cfg=self._get_data_prep_params(),
                                         feature_store_table_cfg=self._get_feature_store_table_cfg(),
                                         labels_table_cfg=self._get_labels_table_cfg())

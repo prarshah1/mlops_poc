@@ -16,3 +16,6 @@ else
   dvc pull
 fi
 
+# TODO for testing purposes, remove this
+export DATABRICKS_HOST=https://dbc-802ec73f-8aa3.cloud.databricks.com
+export DATABRICKS_TOKEN=dapi873f4b7d7e18f00676d17aeee5bacd2e

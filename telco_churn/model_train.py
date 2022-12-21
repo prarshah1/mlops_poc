@@ -18,7 +18,12 @@ from telco_churn.utils.logger_utils import get_logger
 from shap import TreeExplainer
 from shap import summary_plot
 import numpy as np
-
+import shap
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.inspection import partial_dependence, PartialDependenceDisplay
+import matplotlib.pyplot as pl
+from sklearn.inspection import partial_dependence, PartialDependenceDisplay
 fs = FeatureStoreClient()
 _logger = get_logger()
 
@@ -232,11 +237,49 @@ class ModelTrain:
             _logger.info('==========Model Evaluation==========')
             _logger.info('Evaluating and logging metrics')
 
-            """ SHAP """
-            explainer = TreeExplainer(model)
-            shap_values = np.array(explainer.shap_values(X_train))
-            for i in set(y_train[self.cfg.labels_table_cfg.label_col].values):
-                mlflow.log_metric(f"SHAP for label {i}", summary_plot(shap_values[i], X_train))
+            features_df = model["preprocessor"].transform(X_train)
+            """
+            Shap Values
+            """
+            # mlflow.shap.log_explanation(model["classifier"].predict, features_df)
+            # explainer = TreeExplainer(model["classifier"], features_df)
+            # shap_values = explainer(features_df)
+            # # bar plot
+            # shap.plots.bar(shap_values, show=False)
+            # shap_bar = pl.gcf()
+            # mlflow.log_figure(shap_bar, "shap/shap_bar.png")
+            #
+            # # waterfall
+            # shap.plots.waterfall(shap_values[0], show=False)
+            # shap_waterfall_plot = pl.gcf()
+            # mlflow.log_figure(shap_waterfall_plot, "shap/shap_waterfall_plot.png")
+            #
+            # # waterfall
+            # shap.plots.scatter(shap_values[:, shap_values.abs.mean(0).argsort[-1]], show=False)
+            # shap_scatter_plot = pl.gcf()
+            # mlflow.log_figure(shap_scatter_plot, "shap/shap_scatter_plot.png")
+
+            """
+            PDP Values
+            """
+            # PDP
+            # n_cols = X_train.columns.shape[0]
+            # n_rows = int(len(X_train.columns) / n_cols)
+            # fig, ax = plt.subplots(n_rows, n_cols, figsize=(10, 12), sharey=True)
+            # for i, x in enumerate(X_train.columns):
+            #     print(f"i: {i}, x: {x}")
+            #     raw_values = partial_dependence(model["classifier"], model["preprocessor"].transform(X_train), i,
+            #                                     kind='average')
+            #     loc = max(i // n_cols, i % n_cols)
+            #     sns.lineplot(x=raw_values['values'][0],
+            #                  y=raw_values['average'][0], ax=ax[loc], style=0,
+            #                  markers=True, legend=False)
+            #     ax[loc].set_xlabel(x)
+            #     if int(i % n_cols) == 0:
+            #         ax[loc].set_ylabel('Partial dependence')
+            # fig.tight_layout()
+            # mlflow.log_figure(fig, "pdp.jpg")
+
             test_metrics = mlflow.sklearn.eval_and_log_metrics(model, X_test, y_test, prefix='test_')
             print(pd.DataFrame(test_metrics, index=[0]))
 
