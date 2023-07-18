@@ -1,0 +1,40 @@
+[tool.black]
+line-length = 120
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+| \.hg
+| \.mypy_cache
+| \.tox
+| \.venv
+| _build
+| buck-out
+| build
+| notebooks
+| resources
+| mlruns
+)/
+'''
+
+[flake8]
+max-line-length = 120
+extend-ignore = "E721,D203,E203,E251,E266,E302,E305,E401,E402,E501,F401,F403,W503,E722,E721"
+exclude = "tests/*"
+max-complexity = 10
+
+[tool.isort]
+atomic = true
+profile = "black"
+line_length = 120
+skip_gitignore = true
+combine_as_imports = true
+lexicographical = true
+group_by_package = true
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+poetry = "^3.1.0"
